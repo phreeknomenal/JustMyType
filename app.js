@@ -8,7 +8,10 @@ $(document).ready(() => {
     $lowerKeys.show();
 
     // Sentences array
-    let $sentences = ['ten ate'];
+    let $sentences = ['ten ate neite ate nee enet ite ate inet ent eate', 'Too ato too nOt enot one totA not anot tOO aNot'];
+
+    let $words = $sentences.toString();
+    let numofWords = $words.val();
 
     // Set default sentence number & insert sentence into #sentence div.
     $sentenceNumber = 0;
@@ -22,6 +25,11 @@ $(document).ready(() => {
     $correctKeys = 0;
     // Set default for incorrect keypresses.
     $missedKeys = 0;
+
+    // Set default time and date. 
+    isTimeStarted = false;
+    let $startDate;
+    let $startTime;
 
 
     // Event Listener
@@ -63,10 +71,20 @@ $(document).ready(() => {
                 $litKey.css({ backgroundColor: '#f5f5f5', border: '1px solid #e3e3e3' });
             });
 
+            console.log(numofWords)
+
             // Set target letter. 
             let $targLetter = $sentences[$sentenceNumber].charAt($characterNumber);
             // Get letter associated from keypress. 
             let $inputKey = e.key;
+
+            if (isTimeStarted === false) {
+                $startDate = new Date();
+                $startTime = $startDate.getTime();
+                isTimeStarted = true;
+
+                console.log(numofWords);
+            }
 
             if ($inputKey == $targLetter) {
                 // Set charNum to increment
@@ -86,21 +104,36 @@ $(document).ready(() => {
                 if ($sentences[$sentenceNumber].length == $characterNumber) {
                     $sentenceNumber++;
 
-                    console.log($sentences[$sentenceNumber]);
-                    console.log($characterNumber);
+                    console.log($sentences.length);
+                    console.log($sentenceNumber);
+                    // console.log($characterNumber);
 
-                    if ($sentences[$sentenceNumber] == $sentences.length) {
+                    if ($sentenceNumber == $sentences.length) {
                         console.log('This means the end of the sentences array');
+
+                        let $endDate = new Date();
+                        let $endTime = $endDate.getTime();
+
+                        
+                        // let $minutes = ($endTime - $startTime);
+
+                        //calculate words per minute
+                        $wpm = Math.round(54 / $minutes - 2 * $missedKeys);
+
+                        //display results
+                    var r = confirm("You type " + $minutes + " words per minute. Would you like to try again?");
+
                     } else {
                         console.log('This means its going back into the query!')
-                        // let $sentence = $sentences[$sentenceNumber];
-                        // $('#sentence').text($sentence);
-                        // $characterNumber = 0;
-                        
-                        // let $targetLetter = $sentences[$sentenceNumber].charAt($characterNumber);
-                        // $('#target-letter').text($targetLetter);
 
-                        // $('#feedback').empty();
+                        let $sentence = $sentences[$sentenceNumber];
+                        $('#sentence').text($sentence);
+                        $characterNumber = 0;
+
+                        let $targetLetter = $sentences[$sentenceNumber].charAt($characterNumber);
+                        $('#target-letter').text($targetLetter);
+
+                        $('#feedback').empty();
                     }
                     // $('#sentence').text($sentences[$sentenceNumber]);
 
